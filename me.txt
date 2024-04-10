@@ -1,3 +1,63 @@
+
 pnpm create vite
 pnpm install
 pnpm dev
+git init
+github上创建仓库会自动生成提交命令
+git remote add origin git@github.com:zhangkaili2020/vite-react-chakra.git(github生成的提示)
+git push -u origin main(此步走执行后，代码提交到github上)
+先进行 git 初始化，才能进行后续的 eslint 、husky 配置
+pnpm add -D eslint prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-prettier
+
+首先需要在项目安装eslint， 因为当前的案例项目是使用的React项目所以也需要安装react项目关的eslint插件eslint-plugin-react-hooks 这个是给react 函数组件中的hooks一些规则，以及elint-plugin-react-refresh,这个是React的刷新机制有关，React refresh是在开发过程中实现模块热替换的工具。
+pnpm i -D eslint eslint-plugin-react-hooks eslint-plugin-react-refresh
+如果是使用的vite创建的react项目 并且选择了eslint 默认会有安装。
+
+参考react官网(https://legacy.reactjs.org/docs/hooks-rules.html)
+pnpm add eslint-plugin-react-hooks --save-dev
+{
+  "plugins": [
+    // ...
+    "react-hooks"
+  ],
+  "rules": {
+    // ...
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
+  }
+}
+
+安装prettier(https://prettier.io/docs/en/install)
+pnpm add --save-dev --save-exact prettier(确保安装的包的版本号是精确匹配的,将安装指定版本的包，并在 package.json 文件中使用精确的版本号来记录这个依赖)
+node --eval "fs.writeFileSync('.prettierrc','{}\n')"  (node命令的目的是在当前目录下创建一个名为 .prettierrc 的文件，并将一个空的 JSON 对象写入该文件中)
+接下来，创建一个.prettierignore文件，让 Prettier CLI 和编辑器知道哪些文件不格式化。这是一个例子：
+# Ignore artifacts:
+build
+coverage
+
+安装husky和​​lint-staged：
+pnpm add --save-dev husky lint-staged
+npx husky init
+node --eval "fs.writeFileSync('.husky/pre-commit','npx lint-staged\n')"
+package.json顶层配置：
+"lint-staged": {
+  "**/*": "prettier --write --ignore-unknown"
+}
+
+进入到vscode到配置文件setting.json 进行如下配置
+{
+  "editor.formatOnSave": true, // 保存进行格式化
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // 使用prettier进行文档的格式化
+}
+
+配置git提交规范
+https://commitlint.js.org/guides/getting-started.html
+pnpm add --save-dev @commitlint/config-conventional @commitlint/cli
+
+https://www.cnblogs.com/UnfetteredMan/p/17358612.html
+按照以上复制commitlint.config.js 配置
+
+
+
+
+eslint prettier参考https://juejin.cn/post/7320655427247063078#heading-7
